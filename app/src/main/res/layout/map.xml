@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- 頁面主要內容，用一個Layout包著  -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <ImageView
+                android:id="@+id/toolbar_logo"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_input_black_24dp" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="289dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="342dp"
+            app:srcCompat="@drawable/map" />
+
+        <CheckBox
+            android:id="@+id/Wantted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="69dp"
+            android:layout_marginBottom="89dp"
+            android:text="自定義動線" />
+
+        <CheckBox
+            android:id="@+id/Suggest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Wantted"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="71dp"
+            android:layout_marginBottom="11dp"
+            android:text="推薦動線" />
+
+        <CheckBox
+            android:id="@+id/myPath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Suggest"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="73dp"
+            android:layout_marginBottom="4dp"
+            android:text="目前路徑" />
+
+        <ListView
+            android:layout_width="205dp"
+            android:layout_height="316dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="415dp" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="41dp"
+            android:layout_marginBottom="22dp"
+            android:text="設定自定義路線" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="217dp"
+            android:layout_marginBottom="437dp"
+            app:srcCompat="@drawable/ic_place_black_24dp" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="278dp"
+            android:layout_marginBottom="467dp"
+            app:srcCompat="@drawable/ic_place_black_24dp" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="150dp"
+            android:layout_marginBottom="448dp"
+            app:srcCompat="@drawable/ic_place_black_24dp" />
+
+
+    </RelativeLayout>
+
+
+    <!-- 選單 -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/menu_main" />
+
+</android.support.v4.widget.DrawerLayout>

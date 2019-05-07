@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- 頁面主要內容，用一個Layout包著  -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <ImageView
+                android:id="@+id/toolbar_logo"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_person_add_black_24dp" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginBottom="436dp"
+            android:text="Password："
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_above="@+id/textView"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="29dp"
+            android:layout_marginBottom="24dp"
+            android:text="UserName："
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/toolbar"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="43dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="435dp"
+            android:layout_toEndOf="@+id/textView"
+            android:ems="10"
+            android:hint="PassWord"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="188dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editText"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="41dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="19dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="53dp"
+            android:layout_marginBottom="333dp"
+            android:text="Login" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="54dp"
+            android:layout_marginBottom="333dp"
+            android:layout_toStartOf="@+id/button"
+            android:text="Register" />
+
+
+    </RelativeLayout>
+
+
+    <!-- 選單 -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/menu_main" />
+
+</android.support.v4.widget.DrawerLayout>

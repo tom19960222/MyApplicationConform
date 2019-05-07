@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_home"
+            android:checked="true"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="首頁" />
+
+        <item
+            android:id="@+id/action_map"
+            android:title="地圖"
+            android:icon="@drawable/ic_place_black_24dp"/>
+
+        <item
+            android:id="@+id/action_feedback"
+            android:title="意見"
+            android:icon="@drawable/ic_mode_comment_black_24dp"/>
+
+        <item
+            android:id="@+id/action_event"
+            android:title="活動"
+            android:icon="@drawable/ic_event_note_black_24dp"/>
+
+        <item
+            android:id="@+id/action_settings"
+            android:title="設定"
+            android:icon="@drawable/ic_settings_black_24dp"/>
+
+        <item
+            android:id="@+id/action_about"
+            android:title="關於"
+            android:icon="@drawable/ic_group_black_24dp"/>
+    </group>
+
+</menu>
