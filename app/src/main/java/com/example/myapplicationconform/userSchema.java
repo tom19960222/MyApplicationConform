@@ -7,21 +7,12 @@ public class userSchema {
     private Integer Uid;
     private String name;
     private Integer permission;
-    private String message;
-    private int code;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public Integer getUid() {
         return Uid;
     }
 
-    public String message() {
-        return message;
-    }
-
-    public int code() {
-        return code;
-    }
 
     public void setUid(Integer uid) {
         this.Uid = uid;

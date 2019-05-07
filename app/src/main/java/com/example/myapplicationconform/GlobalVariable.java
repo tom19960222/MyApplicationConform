@@ -12,7 +12,8 @@ public class GlobalVariable extends Application {
     private String name;     // 後續要做持續登入（不登出再用）
     private int Uid;
     private Image icon;
-    private String url = "http://2ccf6ed2.ngrok.io/app/";
+    private String url = "http://2ccf6ed2.ngrok.io/";
+    private  String URL = url +"app/";
 
     private Retrofit retrofit;
 
@@ -42,7 +43,18 @@ public class GlobalVariable extends Application {
     public MyAPIService getApi() {
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        api = retrofit.create(MyAPIService.class);
+
+        return api;
+    }
+
+    public MyAPIService getImage() {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(url+"image/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

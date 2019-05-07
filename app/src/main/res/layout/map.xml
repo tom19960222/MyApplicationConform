@@ -120,6 +120,16 @@
             android:layout_marginBottom="448dp"
             app:srcCompat="@drawable/ic_place_black_24dp" />
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="89dp"
+            android:layout_marginBottom="254dp"
+            android:text="TextView" />
+
 
     </RelativeLayout>
 

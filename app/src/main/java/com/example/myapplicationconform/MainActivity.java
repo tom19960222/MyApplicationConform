@@ -40,6 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static org.altbeacon.beacon.BeaconManager.DEFAULT_FOREGROUND_BETWEEN_SCAN_PERIOD;
 import static org.altbeacon.beacon.BeaconManager.DEFAULT_FOREGROUND_SCAN_PERIOD;
@@ -64,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
     Gson gson = new Gson();
 
     // retrofit
-    private int result;
+    private int id;
+    private String name;
 
     // Beacon
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        gv = (GlobalVariable)getApplicationContext();
 
 
         firstOpen();
@@ -107,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void firstOpen() {
+    int firstOpen() {
         // 檢驗第一次啟動ＡＰＰ & 在 firstOpenAPP 存 UserID
         mSharedPreferences = getSharedPreferences(DATA, MODE_PRIVATE);
         firstOpenApp = mSharedPreferences.getInt("Open", firstOpenApp);
 
-        gv = (GlobalVariable)getApplicationContext();
+
 
         if (firstOpenApp == 0) {
             // POST user
@@ -123,30 +125,28 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<userSchema> call, Response<userSchema> response) {
 
-                    Object res = response.body();
-                    String json = gson.toJson(res);
-                    String test[] = json.split("Uid:");
-                    String test1[] = test[1].split(",");
+                    userSchema res = response.body();
 
-                    Toast.makeText(MainActivity.this,json+" | "+test1[0], Toast.LENGTH_LONG).show();
-//                    result = json.getInt("Uid");
-                    // 可以註冊可是回傳值有問題
+                    firstOpenApp = res.getUid();
+                    mSharedPreferences.edit()
+                            .putInt("Open", firstOpenApp)
+                            .apply();
+                    gv.setUid(firstOpenApp);
+                    Toast.makeText(MainActivity.this,res.getUid().toString()+ " 1(res.getUid().toString())", Toast.LENGTH_LONG).show();
                 }
                 @Override
                 public void onFailure(Call<userSchema> call, Throwable t) {
 
-                    Toast.makeText(MainActivity.this,t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,t.toString() +"t", Toast.LENGTH_LONG).show();
                 }
             });
-//            firstOpenApp = result;
-//            Toast.makeText(MainActivity.this,json+" ", Toast.LENGTH_LONG).show();
-//            mSharedPreferences.edit()
-//                    .putInt("Open", firstOpenApp)
-//                    .apply();
+
         }
-        // 設定全域變數 Uid
-        Toast.makeText(MainActivity.this,firstOpenApp+" ", Toast.LENGTH_LONG).show();
-       gv.setUid(firstOpenApp);
+            Toast.makeText(MainActivity.this,"Uid "+firstOpenApp, Toast.LENGTH_LONG).show();
+//         設定全域變數 Uid
+            gv.setUid(firstOpenApp);
+        return firstOpenApp;
+
     }
 
 
@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                builder.setTitle("This app needs location access");
-                builder.setMessage("Please grant location access so this app can detect beacons.");
+                builder.setTitle("請開啟'GPS'權限");
+                builder.setMessage("此權限將用於偵測 Beacon 裝置");
                 builder.setPositiveButton(android.R.string.ok, null);
 
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -188,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("DDDDD", "coarse location permission granted");
                     } else {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("Functionality limited");
-                        builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                        builder.setTitle("功能受限");
+                        builder.setMessage("偵測到 “未同意開啟 GPS 權限”，背景偵測 Beacon 功能將無法使用");
                         builder.setPositiveButton(android.R.string.ok, null);
                         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 

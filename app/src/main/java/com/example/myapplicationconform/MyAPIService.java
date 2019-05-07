@@ -37,5 +37,5 @@ public interface MyAPIService {
     Call<feedbackSchema> feedback(@Path("Uid") int Uid, @Path("Pid") int Pid , @Field("feedback") String feedback);
 
     @GET("{Uid}/{Pid}")
-    Call<ResponseBody> getpath(@Path("Uid")int Uid,@Path("Pid")int Pid);
+    Call<pathSchema> getpath(@Path("Uid")int Uid,@Path("Pid")int Pid);
 }

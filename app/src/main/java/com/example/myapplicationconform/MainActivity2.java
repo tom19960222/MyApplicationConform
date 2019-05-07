@@ -28,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.altbeacon.beacon.Beacon;
@@ -70,6 +71,9 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
     private BluetoothAdapter bA;
     public LocationManager LM;
 
+    private int path;
+    private List<Integer> result;
+    private String url;
 
     // 全域變數
     private GlobalVariable gv;
@@ -96,18 +100,18 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.setForegroundBetweenScanPeriod(DEFAULT_FOREGROUND_BETWEEN_SCAN_PERIOD);
         beaconManager.setForegroundScanPeriod(DEFAULT_FOREGROUND_SCAN_PERIOD);
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
         beaconManager.bind(this);
 
-        if (LM.isProviderEnabled(LM.GPS_PROVIDER)) {
-            //定位已打开的处理
-            if (!bA.getDefaultAdapter().isEnabled()) {
-                Toast.makeText(this, "未開啟 Bluetooth", Toast.LENGTH_LONG).show();
-            }
-        }else {
-            //定位依然没有打开的处理
+        if (!LM.isProviderEnabled(LM.GPS_PROVIDER) && !bA.getDefaultAdapter().isEnabled()) {
+            Toast.makeText(this, "未開啟 Bluetooth & GPS", Toast.LENGTH_LONG).show();
+        }else if(!LM.isProviderEnabled(LM.GPS_PROVIDER) && bA.getDefaultAdapter().isEnabled()){
             Toast.makeText(this, "未開啟 GPS", Toast.LENGTH_LONG).show();
+        }else if(LM.isProviderEnabled(LM.GPS_PROVIDER) && !bA.getDefaultAdapter().isEnabled()){
+            Toast.makeText(this, "未開啟 Bluetooth", Toast.LENGTH_LONG).show();
         }
         // get node
+
 
 
     }
@@ -341,49 +345,45 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
                 Log.i("IIIIII", "didRangeBeaconsInRegion: 调用了这个方法:" + collection.size());
-//                updateTextViewMsg("进入didRangeBeaconsInRegion方法");
                 if (collection.size() > 0) {
                     //符合要求的beacon集合
                     List<Beacon> beacons = new ArrayList<>();
                     ArrayList myList = new ArrayList();
                     for (Beacon beacon : collection) {
                         beacons.add(beacon);
-                        String url = UrlBeaconUrlCompressor.uncompress(beacon.getId1().toByteArray());
+                        url = UrlBeaconUrlCompressor.uncompress(beacon.getId1().toByteArray());
                         String[] array  = url.split("/");
-                        String BASE_URL = array[0] + "//" + array[2] + ".ngrok.io";
+//                        String BASE_URL = array[0] + "//" + array[2] + ".ngrok.io";
 
-//                        gv.setUrl(BASE_URL);
+                        path = Integer.parseInt(array[3]);
 
-                        String path = array[3];
-
-                        url = BASE_URL + "/" + path;
+//                        url = BASE_URL + "/" + path;
                         if( myList.size() < 2 || myList.get(myList.size()-1) != url){
                             myList.add(url);
 
-                            retrofit2.Call<ResponseBody> call = gv.getApi().getpath(gv.getUid(), Integer.parseInt(path));
-
-                            call.enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                                    Object result = response.body();
-
-                                    Toast.makeText(MainActivity2.this,result.toString(), Toast.LENGTH_LONG).show();
-
-                                }
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                                    Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
-                                }
-                            });
                         }
 
                     }
 
+                        retrofit2.Call<pathSchema> call = gv.getApi().getpath(gv.getUid(), path);
+
+                        call.enqueue(new Callback<pathSchema>() {
+                            @Override
+                            public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
+                                TextView textView = (TextView)findViewById(R.id.textView3);
+                                textView.setText(url);
+                                result = response.body().getPath();
+                            }
+                            @Override
+                            public void onFailure(Call<pathSchema> call, Throwable t) {
+                                Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
 
                 }
-            }
+
 
         });
         try {
