@@ -28,6 +28,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +80,11 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
     // 全域變數
     private GlobalVariable gv;
 
+    // 新增元件
+    private RelativeLayout relativeLayout;
+    private ImageView I;
+    private List<Integer> item = new ArrayList<Integer>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +117,39 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
         }else if(LM.isProviderEnabled(LM.GPS_PROVIDER) && !bA.getDefaultAdapter().isEnabled()){
             Toast.makeText(this, "未開啟 Bluetooth", Toast.LENGTH_LONG).show();
         }
-        // get node
+        // get node // 跳出Dialog ，辨別身份
 
+        Call<nodeSchema> call = gv.getApi().getnode();
+        call.enqueue(new Callback<nodeSchema>() {
+            @Override
+            public void onResponse(Call<nodeSchema> call, Response<nodeSchema> response) {
+                List<nodes> l = response.body().getNode();
+                relativeLayout = (RelativeLayout)findViewById(R.id.relativeLayout);
+                TextView t = (TextView)findViewById(R.id.textView3);
+
+                t.setText(l.size() + "  1");
+
+                for (int i = 0; i<l.size(); i++) {
+                    I = new ImageView(MainActivity2.this);
+                    I.setImageResource(R.drawable.ic_place_black_24dp);
+                    I.setId(l.get(i).getNid()*10 + l.get(i).getPid());
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(500,500);
+                    lp.setMargins(i*100,i*100,i*100,i*100);
+                    I.setLayoutParams(lp);
+                    relativeLayout.addView(I);
+                    item.add(I.getId());
+
+                    t.setText(i +"    " +I.getId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<nodeSchema> call, Throwable t) {
+                Toast.makeText(MainActivity2.this, t.toString(), Toast.LENGTH_LONG);
+                TextView tv = (TextView)findViewById(R.id.textView3);
+                tv.setText(t.toString()+ "     1T");
+            }
+        });
 
 
     }
@@ -201,22 +239,43 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
         suggest = (CheckBox) findViewById(R.id.Suggest);
         wantted = (CheckBox) findViewById(R.id.Wantted);
 
-        imageView5 = (ImageView)findViewById(R.id.imageView5);
-        imageView6 = (ImageView)findViewById(R.id.imageView6);
-        imageView7 = (ImageView)findViewById(R.id.imageView7);
-
         myPath.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //判斷CheckBox是否有勾選，同mCheckBox.isChecked()
                 if (isChecked) {
                     //CheckBox狀態 : 已勾選
-                    imageView5.setColorFilter(Color.YELLOW);
-                    imageView6.setColorFilter(Color.YELLOW);
+
+                    retrofit2.Call<pathSchema> call = gv.getApi().getPathUq(gv.getUid());
+
+                    call.enqueue(new Callback<pathSchema>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
+                            result = response.body().getPath();
+                            for (int i = 0; i<result.size(); i++) {
+                                for(int j=0;j<item.size();j++){
+                                    if(result.get(i) == item.get(j)/10){
+                                        I = (ImageView)findViewById(item.get(j));
+                                        I.setColorFilter(Color.YELLOW);
+                                    }
+                                }
+                            }
+                            Toast.makeText(MainActivity2.this,result.toString(), Toast.LENGTH_LONG).show();
+                        }
+                        @Override
+                        public void onFailure(Call<pathSchema> call, Throwable t) {
+                            Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+//                    imageView5.setColorFilter(Color.YELLOW);
+//                    imageView6.setColorFilter(Color.YELLOW);
                 } else {
                     //CheckBox狀態 : 未勾選
-                    imageView5.setColorFilter(Color.BLACK);
-                    imageView6.setColorFilter(Color.BLACK);
+                    for(int j=0;j<item.size();j++){
+                        I = (ImageView)findViewById(item.get(j));
+                        I.setColorFilter(Color.BLACK);
+                    }
                 }
             }
         });
@@ -227,15 +286,40 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 //判斷CheckBox是否有勾選，同mCheckBox.isChecked()
                 if (isChecked) {
                     //CheckBox狀態 : 已勾選
-                    imageView5.setImageResource(R.drawable.s1);
-                    imageView6.setImageResource(R.drawable.s2);
-                    imageView7.setImageResource(R.drawable.s3);
+
+                    retrofit2.Call<pathSchema> call = gv.getApi().getSuggest();
+
+                    call.enqueue(new Callback<pathSchema>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
+                            result = response.body().getPath();
+                            for (int i = 0; i<result.size(); i++) {
+                                for(int j=0;j<item.size();j++){
+                                    if(result.get(i) == item.get(j)/10){
+                                        I = (ImageView)findViewById(item.get(j));
+                                        I.setImageResource(gv.getNumIcon1(i));
+                                    }
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<pathSchema> call, Throwable t) {
+                            Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+//                    imageView5.setImageResource(R.drawable.s1);
+//                    imageView6.setImageResource(R.drawable.s2);
+//                    imageView7.setImageResource(R.drawable.s3);
 
                 } else {
                     //CheckBox狀態 : 未勾選
-                    imageView5.setImageResource(R.drawable.ic_place_black_24dp);
-                    imageView6.setImageResource(R.drawable.ic_place_black_24dp);
-                    imageView7.setImageResource(R.drawable.ic_place_black_24dp);
+                    for(int j=0;j<item.size();j++){
+                        I = (ImageView)findViewById(item.get(j));
+                        I.setImageResource(R.drawable.ic_place_black_24dp);
+                    }
+
                 }
             }
         });
@@ -247,9 +331,34 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 if (isChecked) {
                     //CheckBox狀態 : 已勾選
 
+                    retrofit2.Call<pathSchema> call = gv.getApi().getSuggest();
+
+                    call.enqueue(new Callback<pathSchema>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
+                            result = response.body().getPath();
+                            for (int i = 0; i<result.size(); i++) {
+                                for(int j=0;j<item.size();j++){
+                                    if(result.get(i) == item.get(j)/10){
+                                        I = (ImageView)findViewById(item.get(j));
+                                        I.setImageResource(gv.getNumIcon1(i));
+                                    }
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<pathSchema> call, Throwable t) {
+                            Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
                 } else {
                     //CheckBox狀態 : 未勾選
-
+                    for(int j=0;j<item.size();j++){
+                        I = (ImageView)findViewById(item.get(j));
+                        I.setImageResource(R.drawable.ic_place_black_24dp);
+                    }
                 }
             }
         });
@@ -370,13 +479,12 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                         call.enqueue(new Callback<pathSchema>() {
                             @Override
                             public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
-                                TextView textView = (TextView)findViewById(R.id.textView3);
-                                textView.setText(url);
+
                                 result = response.body().getPath();
                             }
                             @Override
                             public void onFailure(Call<pathSchema> call, Throwable t) {
-                                Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
+//                                Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
                             }
                         });
 

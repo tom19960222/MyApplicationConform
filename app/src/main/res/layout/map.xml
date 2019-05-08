@@ -8,6 +8,7 @@
 
     <!-- 頁面主要內容，用一個Layout包著  -->
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,7 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/toolbar_logo"
@@ -42,6 +44,7 @@
             android:layout_marginTop="43dp"
             android:layout_marginEnd="11dp"
             android:layout_marginBottom="342dp"
+            android:visibility="visible"
             app:srcCompat="@drawable/map" />
 
         <CheckBox
@@ -98,26 +101,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="217dp"
             android:layout_marginBottom="437dp"
-            app:srcCompat="@drawable/ic_place_black_24dp" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="278dp"
-            android:layout_marginBottom="467dp"
-            app:srcCompat="@drawable/ic_place_black_24dp" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="150dp"
-            android:layout_marginBottom="448dp"
+            android:visibility="invisible"
             app:srcCompat="@drawable/ic_place_black_24dp" />
 
         <TextView

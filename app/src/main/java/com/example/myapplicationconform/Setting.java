@@ -12,7 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Setting extends AppCompatActivity {
 
@@ -22,14 +30,21 @@ public class Setting extends AppCompatActivity {
     private Intent it;
     private ImageView iv;
 
+    private ImageView I;
+    private RelativeLayout relativeLayout;
+    private GlobalVariable gv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
 
+        gv = (GlobalVariable)getApplicationContext();
+
         navigationView();
         toolbar.setTitle("設定");
     }
+
 
 
     void navigationView() {

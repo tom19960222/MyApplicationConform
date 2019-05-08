@@ -31,6 +31,8 @@ public interface MyAPIService {
     @GET("productList")
     Call<ResponseBody> getProductList();
 
+    @GET("node")
+    Call<nodeSchema> getnode();
 
     @FormUrlEncoded
     @POST("feedback/{Uid}/{Pid}")
@@ -38,4 +40,10 @@ public interface MyAPIService {
 
     @GET("{Uid}/{Pid}")
     Call<pathSchema> getpath(@Path("Uid")int Uid,@Path("Pid")int Pid);
+
+    @GET("path/{Uid}")
+    Call<pathSchema> getPathUq(@Path("Uid")int Uid);
+
+    @GET("suggest")
+    Call<pathSchema> getSuggest();
 }
