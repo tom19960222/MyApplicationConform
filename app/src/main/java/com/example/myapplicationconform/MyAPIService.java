@@ -46,4 +46,7 @@ public interface MyAPIService {
 
     @GET("suggest")
     Call<pathSchema> getSuggest();
+
+    @GET("wantted/{Uid}")
+    Call<pathSchema> getWantted(@Path("Uid")int Uid);
 }

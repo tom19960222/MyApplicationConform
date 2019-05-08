@@ -256,25 +256,22 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                                 for(int j=0;j<item.size();j++){
                                     if(result.get(i) == item.get(j)/10){
                                         I = (ImageView)findViewById(item.get(j));
-                                        I.setColorFilter(Color.YELLOW);
+                                        I.setColorFilter(Color.BLUE);
                                     }
                                 }
                             }
-                            Toast.makeText(MainActivity2.this,result.toString(), Toast.LENGTH_LONG).show();
+
                         }
                         @Override
                         public void onFailure(Call<pathSchema> call, Throwable t) {
                             Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
                         }
                     });
-
-//                    imageView5.setColorFilter(Color.YELLOW);
-//                    imageView6.setColorFilter(Color.YELLOW);
                 } else {
                     //CheckBox狀態 : 未勾選
                     for(int j=0;j<item.size();j++){
                         I = (ImageView)findViewById(item.get(j));
-                        I.setColorFilter(Color.BLACK);
+                        I.clearColorFilter();
                     }
                 }
             }
@@ -297,7 +294,7 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                                 for(int j=0;j<item.size();j++){
                                     if(result.get(i) == item.get(j)/10){
                                         I = (ImageView)findViewById(item.get(j));
-                                        I.setImageResource(gv.getNumIcon1(i));
+                                        I.setImageResource(gv.getNumIcon2(i));
                                     }
                                 }
                             }
@@ -308,10 +305,6 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                         }
                     });
 
-
-//                    imageView5.setImageResource(R.drawable.s1);
-//                    imageView6.setImageResource(R.drawable.s2);
-//                    imageView7.setImageResource(R.drawable.s3);
 
                 } else {
                     //CheckBox狀態 : 未勾選
@@ -331,20 +324,35 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 if (isChecked) {
                     //CheckBox狀態 : 已勾選
 
-                    retrofit2.Call<pathSchema> call = gv.getApi().getSuggest();
+                    retrofit2.Call<pathSchema> call = gv.getApi().getWantted(gv.getUid());
 
                     call.enqueue(new Callback<pathSchema>() {
                         @Override
                         public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
-                            result = response.body().getPath();
-                            for (int i = 0; i<result.size(); i++) {
-                                for(int j=0;j<item.size();j++){
-                                    if(result.get(i) == item.get(j)/10){
-                                        I = (ImageView)findViewById(item.get(j));
-                                        I.setImageResource(gv.getNumIcon1(i));
+                            pathSchema node = response.body();
+                            if(node == null) {
+                                AlertDialog.Builder myDlg = new AlertDialog.Builder(MainActivity2.this);
+                                myDlg.setMessage("請點擊右下角'設定自定義路線'按鈕，並以自己希望的順序點擊座標記號，最後再次重新勾選（先取消再勾選） ")
+                                        .setTitle("未設定'自定義路線'")
+                                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        })
+                                        .show();
+                            }else{
+                                result = node.getPath();
+                                for (int i = 0; i<result.size(); i++) {
+                                    for(int j=0;j<item.size();j++){
+                                        if(result.get(i) == item.get(j)/10){
+                                            I = (ImageView)findViewById(item.get(j));
+                                            I.setImageResource(gv.getNumIcon1(i));
+                                        }
                                     }
                                 }
                             }
+
                         }
                         @Override
                         public void onFailure(Call<pathSchema> call, Throwable t) {
@@ -467,10 +475,13 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                         path = Integer.parseInt(array[3]);
 
 //                        url = BASE_URL + "/" + path;
-                        if( myList.size() < 2 || myList.get(myList.size()-1) != url){
-                            myList.add(url);
+                        if ( gv.getdUrl() == array[2] ){
+                            if( myList.size() < 2 || myList.get(myList.size()-1) != url){
+                                myList.add(url);
 
+                            }
                         }
+
 
                     }
 

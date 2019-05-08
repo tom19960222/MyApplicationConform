@@ -15,7 +15,8 @@ public class GlobalVariable extends Application {
     private String name;     // 後續要做持續登入（不登出再用）
     private int Uid;
     private Image icon;
-    private String url = "http://2ccf6ed2.ngrok.io/";
+    private String dUrl = "b750ac3d";
+    private String url = "http://" + dUrl +".ngrok.io/";
     private  String URL = url +"app/";
     private List<Integer> numIcon1 =
             Arrays.asList(
@@ -96,7 +97,11 @@ public class GlobalVariable extends Application {
     }
 
     public Integer getNumIcon2(int position) {
-        return numIcon1.get(position);
+        return numIcon2.get(position);
+    }
+
+    public String getdUrl() {
+        return dUrl;
     }
 }
 
