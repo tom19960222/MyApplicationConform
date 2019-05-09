@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,35 +41,28 @@ public class About extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
 
-        apigettest();
+        webView();
         navigationView();
         toolbar.setTitle("關於");
     }
 
+    void webView(){
+        WebView webview = (WebView) findViewById(R.id.webView);
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        // 設定可以支援縮放
+        webSettings.setSupportZoom(true);
+        // 設定出現縮放工具
+        webSettings.setBuiltInZoomControls(true);
+        //擴大比例的縮放
+        webSettings.setUseWideViewPort(true);
+        //自適應螢幕
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLoadWithOverviewMode(true);
+        webview.loadUrl("http://www.csie.tku.edu.tw/main.php");
 
-    void apigettest() {
-        tv = (TextView) findViewById(R.id.textView) ;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://458bb5b1.ngrok.io/app/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MyAPIService api = retrofit.create(MyAPIService.class);
-
-        Call<productSchema> call = api.getProduct(1);
-        call.enqueue(new Callback<productSchema>() {
-            @Override
-            public void onResponse(Call<productSchema> call, Response<productSchema> response) {
-
-                String result = response.body().getPid().toString();
-                tv.setText(result);
-
-            }
-            @Override
-            public void onFailure(Call<productSchema> call, Throwable t) {
-                tv.setText("Failure" + t);
-            }
-        });
     }
+
 
      void navigationView() {
         // 連結元件

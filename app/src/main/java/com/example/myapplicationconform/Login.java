@@ -129,8 +129,8 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                // login, message 怪怪的（現在的是header, 不是json中的東西
-
+                // 還是有一點問題，懷疑是因為HTTP status code不一（？
+                // 目前 response.body() => null
                 gv = (GlobalVariable) getApplicationContext();
                 name = (EditText)findViewById(R.id.editText2);
                 password = (EditText)findViewById(R.id.editText);
@@ -139,24 +139,29 @@ public class Login extends AppCompatActivity {
                 }else if(password.getText().toString().matches("")){
                     Toast.makeText(Login.this, "密碼不得為空",Toast.LENGTH_LONG).show();
                 } else{
-                    Call<userSchema> call = gv.getApi().login(gv.getUid(), name.getText().toString(), password.getText().toString());
-                    call.enqueue(new Callback<userSchema>() {
+
+                    Call<loginSchema> call = gv.getApi().login(gv.getUid(), name.getText().toString(), password.getText().toString());
+                    call.enqueue(new Callback<loginSchema>() {
                         @Override
-                        public void onResponse(Call<userSchema> call, Response<userSchema> response) {
+                        public void onResponse(Call<loginSchema> call, Response<loginSchema> response) {
                             if(response.code() == 401){
-//                                Toast.makeText(Login.this, response.message().toString(), Toast.LENGTH_LONG).show();
                                 Toast.makeText(Login.this, "登入失敗", Toast.LENGTH_LONG).show();
-                            }else if(response.code() == 403){
+                            }else if(response.code() == 403) {
                                 Toast.makeText(Login.this, "尚未註冊", Toast.LENGTH_LONG).show();
+                            }else if(response.code() == 200) {
+                                Toast.makeText(Login.this, "登入成功", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(Login.this, "伺服器未連線", Toast.LENGTH_LONG).show();
                             }
-                            Toast.makeText(Login.this, "登入成功", Toast.LENGTH_LONG).show();
                         }
 
                         @Override
-                        public void onFailure(Call<userSchema> call, Throwable t) {
+                        public void onFailure(Call<loginSchema> call, Throwable t) {
                             Toast.makeText(Login.this,"Login fail: "+t.toString(), Toast.LENGTH_LONG).show();
                         }
                     });
+
+
                 }
             }
         });

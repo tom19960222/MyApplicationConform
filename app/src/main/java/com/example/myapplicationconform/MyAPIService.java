@@ -15,7 +15,7 @@ public interface MyAPIService {
 
     @FormUrlEncoded
     @POST("login/{Uid}")
-    Call<userSchema> login(@Path("Uid")int Uid, @Field("name") String name, @Field("password") String password);
+    Call<loginSchema> login(@Path("Uid")int Uid, @Field("name") String name, @Field("password") String password);
 
     @FormUrlEncoded
     @POST("user/{Uid}")

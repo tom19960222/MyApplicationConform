@@ -120,7 +120,7 @@ public class Register extends AppCompatActivity {
         submit.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //patch user/Uid "Open"Shared
+                //patch user/Uid
 
                 gv = (GlobalVariable) getApplicationContext();
                 name = (EditText)findViewById(R.id.editText2);
@@ -136,13 +136,12 @@ public class Register extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<userSchema> call, Response<userSchema> response) {
 
-                            Toast.makeText(Register.this, response.message().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Register.this, response.body().getname()+ "   ～註冊成功～", Toast.LENGTH_LONG).show();
                         }
 
                         @Override
                         public void onFailure(Call<userSchema> call, Throwable t) {
-                            Toast.makeText(Register.this, "註冊成功", Toast.LENGTH_LONG).show(); // For Demo
-//                            Toast.makeText(Register.this,"Login fail: "+t.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Register.this,"Login fail: "+t.toString(), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
