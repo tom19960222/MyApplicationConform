@@ -20,28 +20,37 @@ public class GlobalVariable extends Application {
     private  String URL = url +"app/";
     private List<Integer> numIcon1 =
             Arrays.asList(
-                    R.drawable.one,
-                    R.drawable.two,
-                    R.drawable.three,
-                    R.drawable.four,
-                    R.drawable.five,
-                    R.drawable.six,
-                    R.drawable.seven,
-                    R.drawable.eight,
-                    R.drawable.nine,
-                    R.drawable.ten);
+                    R.drawable.ic_looks_one_black_24dp,
+                    R.drawable.ic_looks_two_black_24dp);
+//    private List<Integer> numIcon1 =
+//            Arrays.asList(
+//                    R.drawable.one,
+//                    R.drawable.two,
+//                    R.drawable.three,
+//                    R.drawable.four,
+//                    R.drawable.five,
+//                    R.drawable.six,
+//                    R.drawable.seven,
+//                    R.drawable.eight,
+//                    R.drawable.nine,
+//                    R.drawable.ten);
+
     private List<Integer> numIcon2 =
             Arrays.asList(
-                    R.drawable.gone,
-                    R.drawable.gtwo,
-                    R.drawable.gthree,
-                    R.drawable.gfour,
-                    R.drawable.gfive,
-                    R.drawable.gsix,
-                    R.drawable.gseven,
-                    R.drawable.geight,
-                    R.drawable.gnine,
-                    R.drawable.gten);
+                    R.drawable.ic_filter_1_black_24dp,
+                    R.drawable.ic_filter_2_black_24dp);
+//    private List<Integer> numIcon2 =
+//            Arrays.asList(
+//                    R.drawable.gone,
+//                    R.drawable.gtwo,
+//                    R.drawable.gthree,
+//                    R.drawable.gfour,
+//                    R.drawable.gfive,
+//                    R.drawable.gsix,
+//                    R.drawable.gseven,
+//                    R.drawable.geight,
+//                    R.drawable.gnine,
+//                    R.drawable.gten);
 
     private Retrofit retrofit;
 
@@ -81,23 +90,16 @@ public class GlobalVariable extends Application {
         return api;
     }
 
-    public MyAPIService getImage() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(url+"image/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        api = retrofit.create(MyAPIService.class);
-
-        return api;
-    }
-
     public Integer getNumIcon1(int position) {
         return numIcon1.get(position);
     }
 
     public Integer getNumIcon2(int position) {
         return numIcon2.get(position);
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getdUrl() {

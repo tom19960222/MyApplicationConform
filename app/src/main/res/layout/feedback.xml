@@ -33,7 +33,7 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="369dp"
-            android:layout_height="50dp"
+            android:layout_height="72dp"
             android:layout_below="@+id/toolbar"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="12dp"
@@ -58,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="72dp" />
+                android:paddingBottom="72dp"
+                android:visibility="invisible" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btnAdd"
@@ -71,6 +72,18 @@
                 app:pressedTranslationZ="12dp" />
 
         </android.support.design.widget.CoordinatorLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="211dp"
+            android:layout_marginBottom="483dp"
+            android:layout_below="@id/toolbar"
+            android:text="TextView"
+            android:textSize="30sp" />
 
     </RelativeLayout>
 

@@ -11,13 +11,9 @@ public class productSchema {
     private Integer Pid;
     private String Pname;
     private String description;
+    private String icon;
     private List<String> image = null;
-    private Array ProductName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    public Array getProductName() {
-        return ProductName;
-    }
 
     public Integer getPid() {
         return Pid;
@@ -41,6 +37,10 @@ public class productSchema {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getIcon() {
+        return icon;
     }
 
     public List<String> getImage() {

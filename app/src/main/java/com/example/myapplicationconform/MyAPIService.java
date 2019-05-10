@@ -25,7 +25,7 @@ public interface MyAPIService {
     Call<productSchema> getProduct(@Path("id") int id);
 
     @GET("productName")
-    Call<ResponseBody> getProductName();
+    Call<productNameSchema> getProductName();
 
 
     @GET("productList")

@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,6 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -62,7 +65,6 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
     private Toolbar toolbar;
     private ImageView iv;
     private CheckBox myPath,suggest,wantted;
-    private ImageView imageView5,imageView6,imageView7;
 
     //Beacon
     private static final long DEFAULT_FOREGROUND_SCAN_PERIOD = 1000L;
@@ -82,8 +84,17 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
 
     // 新增元件
     private RelativeLayout relativeLayout;
-    private ImageView I;
+    private ImageButton I;
+    private ImageButton ib;
     private List<Integer> item = new ArrayList<Integer>();
+
+    private productSchema q;
+    private ImageView Ico;
+    private TextView title;
+    private TextView description;
+    private Button image;
+    private Button vedio;
+
 
 
     @Override
@@ -130,16 +141,24 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 t.setText(l.size() + "  1");
 
                 for (int i = 0; i<l.size(); i++) {
-                    I = new ImageView(MainActivity2.this);
+                    I = new ImageButton(MainActivity2.this);
                     I.setImageResource(R.drawable.ic_place_black_24dp);
+                    I.setBackgroundColor(Color.TRANSPARENT);
                     I.setId(l.get(i).getNid()*10 + l.get(i).getPid());
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(500,500);
-                    lp.setMargins(i*100,i*100,i*100,i*100);
+                    I.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CreateImageButton(v.getId());
+                        }
+                    });
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100, 100);
+                    lp.addRule(RelativeLayout.BELOW, R.id.toolbar);
+                    lp.setMargins(i*500,i*500,i*500,i*500);
                     I.setLayoutParams(lp);
                     relativeLayout.addView(I);
                     item.add(I.getId());
 
-                    t.setText(i +"    " +I.getId());
+
                 }
             }
 
@@ -148,6 +167,63 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 Toast.makeText(MainActivity2.this, t.toString(), Toast.LENGTH_LONG);
                 TextView tv = (TextView)findViewById(R.id.textView3);
                 tv.setText(t.toString()+ "     1T");
+            }
+        });
+
+    }
+
+    void CreateImageButton(int id) {
+
+        Ico = (ImageView)findViewById(R.id.imgIcon);
+        title = (TextView)findViewById(R.id.title);
+        description = (TextView)findViewById(R.id.description);
+
+        image = (Button)findViewById(R.id.button4);
+        vedio = (Button) findViewById(R.id.button5);
+
+        Call<productSchema> call = gv.getApi().getProduct(id % 10);
+
+        call.enqueue(new Callback<productSchema>() {
+            @Override
+            public void onResponse(Call<productSchema> call, Response<productSchema> response) {
+                q = response.body();
+
+                Picasso.get().load(gv.getUrl()+q.getIcon()).into(Ico);
+                title.setText(q.getPname());
+                description.setText(q.getDescription());
+
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        it = new Intent(MainActivity2.this, product_image.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArrayList("url", (ArrayList<String>) q.getImage());
+                        it.putExtras(bundle);
+
+                        startActivity(it);
+                    }
+                });
+
+                vedio.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        it = new Intent(MainActivity2.this, product_vedio.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArrayList("url", (ArrayList<String>) q.getImage());
+                        it.putExtras(bundle);
+
+                        startActivity(it);
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onFailure(Call<productSchema> call, Throwable t) {
+
             }
         });
 
@@ -255,8 +331,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                             for (int i = 0; i<result.size(); i++) {
                                 for(int j=0;j<item.size();j++){
                                     if(result.get(i) == item.get(j)/10){
-                                        I = (ImageView)findViewById(item.get(j));
-                                        I.setColorFilter(Color.BLUE);
+                                        ib = (ImageButton) findViewById(item.get(j));
+                                        ib.setColorFilter(Color.BLUE);
                                     }
                                 }
                             }
@@ -270,8 +346,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 } else {
                     //CheckBox狀態 : 未勾選
                     for(int j=0;j<item.size();j++){
-                        I = (ImageView)findViewById(item.get(j));
-                        I.clearColorFilter();
+                        ib = (ImageButton) findViewById(item.get(j));
+                        ib.clearColorFilter();
                     }
                 }
             }
@@ -293,8 +369,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                             for (int i = 0; i<result.size(); i++) {
                                 for(int j=0;j<item.size();j++){
                                     if(result.get(i) == item.get(j)/10){
-                                        I = (ImageView)findViewById(item.get(j));
-                                        I.setImageResource(gv.getNumIcon2(i));
+                                        ib = (ImageButton) findViewById(item.get(j));
+                                        ib.setImageResource(gv.getNumIcon1(i));
                                     }
                                 }
                             }
@@ -309,8 +385,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 } else {
                     //CheckBox狀態 : 未勾選
                     for(int j=0;j<item.size();j++){
-                        I = (ImageView)findViewById(item.get(j));
-                        I.setImageResource(R.drawable.ic_place_black_24dp);
+                        ib = (ImageButton) findViewById(item.get(j));
+                        ib.setImageResource(R.drawable.ic_place_black_24dp);
                     }
 
                 }
@@ -346,8 +422,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                                 for (int i = 0; i<result.size(); i++) {
                                     for(int j=0;j<item.size();j++){
                                         if(result.get(i) == item.get(j)/10){
-                                            I = (ImageView)findViewById(item.get(j));
-                                            I.setImageResource(gv.getNumIcon1(i));
+                                            ib = (ImageButton) findViewById(item.get(j));
+                                            ib.setImageResource(gv.getNumIcon2(i));
                                         }
                                     }
                                 }
@@ -364,8 +440,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                 } else {
                     //CheckBox狀態 : 未勾選
                     for(int j=0;j<item.size();j++){
-                        I = (ImageView)findViewById(item.get(j));
-                        I.setImageResource(R.drawable.ic_place_black_24dp);
+                        ib = (ImageButton) findViewById(item.get(j));
+                        ib.setImageResource(R.drawable.ic_place_black_24dp);
                     }
                 }
             }
@@ -388,56 +464,6 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-//                                final ImageButton im1 = (ImageButton)findViewById(R.id.imageButton8);
-//                                final ImageButton im2 = (ImageButton)findViewById(R.id.imageButton9);
-//                                final ImageButton im3 = (ImageButton)findViewById(R.id.imageButton10);
-//
-//                                final int[] tapCount = {0};
-//
-//                                im1.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        tapCount[0]++;
-//                                        if(tapCount[0] == 1){
-//                                           im1.setImageResource(R.drawable.one);
-//                                        }else if(tapCount[0] == 2) {
-//                                            im1.setImageResource(R.drawable.two);
-//                                        }else {
-//                                            im1.setImageResource(R.drawable.three);
-//                                        }
-//                                    }
-//                                });
-//
-//                                im2.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        tapCount[0]++;
-//                                        if (tapCount[0] == 1) {
-//                                            im2.setImageResource(R.drawable.one);
-//                                        } else if (tapCount[0] == 2) {
-//                                            im2.setImageResource(R.drawable.two);
-//                                        } else {
-//                                            im2.setImageResource(R.drawable.three);
-//                                        }
-//
-//                                    }
-//                                });
-//
-//                                im3.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        tapCount[0]++;
-//                                        if(tapCount[0] == 1){
-//                                            im3.setImageResource(R.drawable.one);
-//                                        }else if(tapCount[0] == 2) {
-//                                            im3.setImageResource(R.drawable.two);
-//                                        }else {
-//                                            im3.setImageResource(R.drawable.three);
-//                                        }
-//
-//                                    }
-//                                });
-//
                                 Toast.makeText(getApplicationContext(), "自定義路線成功" , Toast.LENGTH_LONG).show();
                             }
                         })//設定結束的子視窗
@@ -458,59 +484,59 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
     @Override
     public void onBeaconServiceConnect() {
 
-        beaconManager.addRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
-                Log.i("IIIIII", "didRangeBeaconsInRegion: 调用了这个方法:" + collection.size());
-                if (collection.size() > 0) {
-                    //符合要求的beacon集合
-                    List<Beacon> beacons = new ArrayList<>();
-                    ArrayList myList = new ArrayList();
-                    for (Beacon beacon : collection) {
-                        beacons.add(beacon);
-                        url = UrlBeaconUrlCompressor.uncompress(beacon.getId1().toByteArray());
-                        String[] array  = url.split("/");
-//                        String BASE_URL = array[0] + "//" + array[2] + ".ngrok.io";
-
-                        path = Integer.parseInt(array[3]);
-
-//                        url = BASE_URL + "/" + path;
-                        if ( gv.getdUrl() == array[2] ){
-                            if( myList.size() < 2 || myList.get(myList.size()-1) != url){
-                                myList.add(url);
-
-                            }
-                        }
-
-
-                    }
-
-                        retrofit2.Call<pathSchema> call = gv.getApi().getpath(gv.getUid(), path);
-
-                        call.enqueue(new Callback<pathSchema>() {
-                            @Override
-                            public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
-
-                                result = response.body().getPath();
-                            }
-                            @Override
-                            public void onFailure(Call<pathSchema> call, Throwable t) {
-//                                Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                    }
-
-                }
-
-
-        });
-        try {
-//            别忘了启动搜索,不然不会调用didRangeBeaconsInRegion方法
-            beaconManager.startRangingBeaconsInRegion(new Region("all-beacons-region", null, null, null));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        beaconManager.addRangeNotifier(new RangeNotifier() {
+//            @Override
+//            public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
+//                Log.i("IIIIII", "didRangeBeaconsInRegion: 调用了这个方法:" + collection.size());
+//                if (collection.size() > 0) {
+//                    //符合要求的beacon集合
+//                    List<Beacon> beacons = new ArrayList<>();
+//                    ArrayList myList = new ArrayList();
+//                    for (Beacon beacon : collection) {
+//                        beacons.add(beacon);
+//                        url = UrlBeaconUrlCompressor.uncompress(beacon.getId1().toByteArray());
+//                        String[] array  = url.split("/");
+////                        String BASE_URL = array[0] + "//" + array[2] + ".ngrok.io";
+//
+//                        path = Integer.parseInt(array[3]);
+//
+////                        url = BASE_URL + "/" + path;
+//                        if ( gv.getdUrl() == array[2] ){
+//                            if( myList.size() < 2 || myList.get(myList.size()-1) != url){
+//                                myList.add(url);
+//
+//                            }
+//                        }
+//
+//
+//                    }
+//
+//                        retrofit2.Call<pathSchema> call = gv.getApi().getpath(gv.getUid(), path);
+//
+//                        call.enqueue(new Callback<pathSchema>() {
+//                            @Override
+//                            public void onResponse(retrofit2.Call<pathSchema> call, Response<pathSchema> response) {
+//
+//                                result = response.body().getPath();
+//                            }
+//                            @Override
+//                            public void onFailure(Call<pathSchema> call, Throwable t) {
+////                                Toast.makeText(MainActivity2.this,t.toString(), Toast.LENGTH_LONG).show();
+//                            }
+//                        });
+//
+//                    }
+//
+//                }
+//
+//
+//        });
+//        try {
+////            别忘了启动搜索,不然不会调用didRangeBeaconsInRegion方法
+//            beaconManager.startRangingBeaconsInRegion(new Region("all-beacons-region", null, null, null));
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".product_image">
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/imageView6"-->
+        <!--android:layout_width="388dp"-->
+        <!--android:layout_height="364dp"-->
+        <!--android:layout_marginStart="217dp"-->
+        <!--android:layout_marginTop="240dp"-->
+        <!--android:layout_marginEnd="66dp"-->
+        <!--android:layout_marginBottom="363dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.792"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.44"-->
+        <!--app:srcCompat="@drawable/logo"-->
+        <!--android:background="@android:color/transparent"/>-->
+
+    <com.youth.banner.Banner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        app:image_scale_type="fit_xy"
+        android:layout_height="match_parent" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/textView5"-->
+        <!--android:layout_width="278dp"-->
+        <!--android:layout_height="69dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:text="點擊圖片以更換圖片"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textSize="30sp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/imageView6" />-->
+</android.support.constraint.ConstraintLayout>

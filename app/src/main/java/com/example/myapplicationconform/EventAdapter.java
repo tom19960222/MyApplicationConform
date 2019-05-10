@@ -47,10 +47,11 @@ class EventAdapter extends BaseAdapter {
     private List<Map<String, Object>> data;
     private LayoutInflater mInflater = null;
 
-    private Context context;
+    private Context context1;
 
     public EventAdapter(Context context) {
         data = getData();
+        context1=context;
         this.mInflater = LayoutInflater.from(context);
     }
 
@@ -78,7 +79,7 @@ class EventAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         data = getData();
         ViewHolder holder;
         if (convertView == null) {
@@ -86,13 +87,38 @@ class EventAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.event_listitem, null);
             holder.date = (TextView) convertView.findViewById(R.id.date);
             holder.title = (TextView) convertView.findViewById(R.id.title);
+            holder.btnAll = (Button) convertView.findViewById(R.id.btnAll);
+            holder.btn = (Button) convertView.findViewById(R.id.btn);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.date.setText((String) data.get(position).get("date"));
         holder.title.setText((String) data.get(position).get("title"));
+        holder.btnAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context1,EventWebView.class);
 
+                Bundle bundle = new Bundle();
+                bundle.putString("url",(String) data.get(position).get("DetailUrl"));
+                intent.putExtras(bundle);
+
+                context1.startActivity(intent);
+            }
+        });;
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context1,EventWebView.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("url",(String) data.get(position).get("EnterUrl"));
+                intent.putExtras(bundle);
+
+                context1.startActivity(intent);
+            }
+        });
         return convertView;
     }
 

@@ -120,14 +120,5 @@ public class Event extends AppCompatActivity {
 //        recycler_view.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
 
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
-                ListView listView = (ListView) parent;
-                Toast.makeText(Event.this, "ID：" + id + "   選單文字："+ listView.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-
-            }
-        }); //有問題，連點都不能點
     }
 }

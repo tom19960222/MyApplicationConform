@@ -26,9 +26,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -52,7 +54,11 @@ public class FeedbackActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private LayoutInflater inflater;
 
+    private String input;
+
     // adapter (適配器) => Spinner\list view
+    private ProductAdapter productAdapter;
+
     private Spinner spinner;
     private ListView listView;
 
@@ -172,9 +178,22 @@ public class FeedbackActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             EditText editText = (EditText) (v.findViewById(R.id.feedback));
 
-                            Call<feedbackSchema> call = gv.getApi().feedback(gv.getUid(), Pid, editText.getText().toString());
+                            Call<feedbackSchema> call = gv.getApi().feedback(gv.getUid(), Pid, input);
 
-                            Toast.makeText(getApplicationContext(), "這邊要 POST Uid,Pid,Feedback" + editText.getText().toString(), Toast.LENGTH_LONG).show();
+                            call.enqueue(new Callback<feedbackSchema>() {
+                                @Override
+                                public void onResponse(Call<feedbackSchema> call, Response<feedbackSchema> response) {
+
+                                    Toast.makeText(getApplicationContext(), "意見發布成功", Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<feedbackSchema> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), "此意見已刪除" , Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+
                         }
                     })//設定結束的子視窗
                     .setNeutralButton("CANCEL",new DialogInterface.OnClickListener() {
@@ -193,32 +212,40 @@ public class FeedbackActivity extends AppCompatActivity {
     void spin() {
         spinner = (Spinner)findViewById(R.id.spinner);
         // Get Product name
-        final ProductAdapter adapter = new ProductAdapter(FeedbackActivity.this);
-        spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Object o = adapter.getItem(position);
 
-                Toast.makeText(FeedbackActivity.this, "你選的是" + adapter.getItem(position), Toast.LENGTH_SHORT).show();
+//                productName o = productAdapter.getItem(position);
+                TextView t = (TextView)findViewById(R.id.textView4);
+                t.setText(parent.getItemAtPosition(position).toString());
+
+                Toast.makeText(parent.getContext(), "你選的是" +  parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                productName o = productAdapter.getItem(1);
+
+                TextView t = (TextView)findViewById(R.id.textView4);
+                t.setText(o.toString());
+                Toast.makeText(FeedbackActivity.this, "你選的是" + o.getPid() + "預設", Toast.LENGTH_SHORT).show();
 
             }
         });
+        productAdapter = new ProductAdapter(FeedbackActivity.this);
+        spinner.setAdapter(productAdapter);
 
     }
 
     void listView() {
-        listView = (ListView) findViewById(R.id.listView);
-        // Get Feedback
-        // Feedback Adapter
-        FeedbackAdapter adapter = new FeedbackAdapter(FeedbackActivity.this);
-//        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        listView.setAdapter(adapter);
+//        listView = (ListView) findViewById(R.id.listView);
+//        // Get Feedback
+//        // Feedback Adapter
+//        FeedbackAdapter adapter = new FeedbackAdapter(FeedbackActivity.this);
+////        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+//        listView.setAdapter(adapter);
     }
 
 
