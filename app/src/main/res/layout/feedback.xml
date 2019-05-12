@@ -38,6 +38,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="19dp"
+            android:popupTheme="@android:style/ThemeOverlay.Material.Light"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin" />
 
@@ -77,13 +78,14 @@
             android:id="@+id/textView4"
             android:layout_width="175dp"
             android:layout_height="100dp"
+            android:layout_below="@id/toolbar"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="211dp"
             android:layout_marginBottom="483dp"
-            android:layout_below="@id/toolbar"
             android:text="TextView"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

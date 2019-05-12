@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,19 +33,19 @@ class ProductAdapter extends BaseAdapter {
 //    private List<String> test = new ArrayList<String>();;
     private Context context;
     private GlobalVariable gv;
-    private int num = 0;
 
-    private List<productName> getData() {
-
-        gv = (GlobalVariable)context1.getApplicationContext();
+    private void getData() {
+         gv = (GlobalVariable)context1.getApplicationContext();
 
         Call<productNameSchema> call = gv.getApi().getProductName();
+
+        final ProductAdapter PA = this;
 
         call.enqueue(new Callback<productNameSchema>() {
             @Override
             public void onResponse(Call<productNameSchema> call, Response<productNameSchema> response) {
                 result = response.body().getProductName();
-//                num = result.size();
+                PA.data = result;
 //                Toast.makeText(context1, result.toString(), Toast.LENGTH_LONG);
             }
 
@@ -54,8 +55,8 @@ class ProductAdapter extends BaseAdapter {
 
             }
         });
-        return result;
     }
+
 
     static class ViewHolder {
         public ImageView icon;
@@ -64,41 +65,37 @@ class ProductAdapter extends BaseAdapter {
     }
 
 //    private List<Map<String, Object>> data;
-    private List<productName> data;
+    private List<productName> data = new ArrayList<productName>();;
     private LayoutInflater mInflater = null;
     private Context context1;
 
     public ProductAdapter(Context context) {
         context1 = context;
-//        data = getData();
+        getData();
         this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        data = getData();
-        // How many items are in the data set represented by this Adapter.(在此适配器中所代表的数据集中的条目数)
+
         return data.size();
 
     }
 
     @Override
     public productName getItem(int position) {
-//        data = getData();
-        // Get the data item associated with the specified position in the data set.(获取数据集中与指定索引对应的数据项)
-        return result.get(position);
+        return data.get(position);
     }
 
     @Override
     public long getItemId(int position) {
 //        data = getData();
-        // Get the row id associated with the specified position in the list.(取在列表中与指定索引对应的行id)
         return position;
     }
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 //        data = getData();
         ViewHolder holder;
         if (convertView == null) {
@@ -111,15 +108,16 @@ class ProductAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        Picasso.get().load(gv.getUrl()+data.get(position).getIcon()).into(holder.icon);
-        holder.Pid.setText(result.get(position).toString());
-        holder.Pname.setText( result.get(position).toString());
-        holder.Pname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context1, "你選的是" +  v.getId() , Toast.LENGTH_SHORT).show();
-            }
-        });
+        Picasso.get().load(gv.getUrl()+data.get(position).getIcon()).into(holder.icon);
+        holder.Pid.setText(data.get(position).getPid().toString());
+        holder.Pname.setText( data.get(position).getPname().toString());
+//        holder.Pname.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                System.out.println( "你選的是"+ data.get(position).getPid());
+//                Toast.makeText(context1, "你選的是" +  data.get(position).getPid() , Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return convertView;
     }
 }
