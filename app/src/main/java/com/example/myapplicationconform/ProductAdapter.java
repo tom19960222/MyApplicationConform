@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,51 +29,33 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class ProductAdapter extends BaseAdapter {
 
     private List<productName> result;
+//    private List<String> test = new ArrayList<String>();;
     private Context context;
     private GlobalVariable gv;
-    private int num;
+    private int num = 0;
 
     private List<productName> getData() {
 
+        gv = (GlobalVariable)context1.getApplicationContext();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://b750ac3d.ngrok.io/app/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MyAPIService api = retrofit.create(MyAPIService.class);
-
-        Call<productNameSchema> call = api.getProductName();
+        Call<productNameSchema> call = gv.getApi().getProductName();
 
         call.enqueue(new Callback<productNameSchema>() {
             @Override
             public void onResponse(Call<productNameSchema> call, Response<productNameSchema> response) {
                 result = response.body().getProductName();
-                num = result.size();
+//                num = result.size();
+//                Toast.makeText(context1, result.toString(), Toast.LENGTH_LONG);
             }
 
             @Override
             public void onFailure(Call<productNameSchema> call, Throwable t) {
+//                Toast.makeText(context1, t.toString(), Toast.LENGTH_LONG);
 
             }
         });
         return result;
     }
-
-//    private List<Map<String, Object>> getData() {
-//        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-//        Map<String, Object> map;
-//
-//
-//            map = new HashMap<String, Object>();
-//            map.put("Picon", R.drawable.p);
-//            map.put("Pid", "1");
-//            map.put("Pname", "test");
-//            list.add(map);
-//
-//        return list;
-//    }
-
 
     static class ViewHolder {
         public ImageView icon;
@@ -83,9 +66,11 @@ class ProductAdapter extends BaseAdapter {
 //    private List<Map<String, Object>> data;
     private List<productName> data;
     private LayoutInflater mInflater = null;
+    private Context context1;
 
     public ProductAdapter(Context context) {
-        data = getData();
+        context1 = context;
+//        data = getData();
         this.mInflater = LayoutInflater.from(context);
     }
 
@@ -93,20 +78,20 @@ class ProductAdapter extends BaseAdapter {
     public int getCount() {
         data = getData();
         // How many items are in the data set represented by this Adapter.(在此适配器中所代表的数据集中的条目数)
-        return num;
+        return data.size();
 
     }
 
     @Override
     public productName getItem(int position) {
-        data = getData();
+//        data = getData();
         // Get the data item associated with the specified position in the data set.(获取数据集中与指定索引对应的数据项)
-        return data.get(position);
+        return result.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        data = getData();
+//        data = getData();
         // Get the row id associated with the specified position in the list.(取在列表中与指定索引对应的行id)
         return position;
     }
@@ -114,7 +99,7 @@ class ProductAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        data = getData();
+//        data = getData();
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -126,9 +111,15 @@ class ProductAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Picasso.get().load("http://b750ac3d.ngrok.io/"+data.get(position).getIcon()).into(holder.icon);
-        holder.Pid.setText(data.get(position).getPid().toString());
-        holder.Pname.setText((String) data.get(position).getPname());
+//        Picasso.get().load(gv.getUrl()+data.get(position).getIcon()).into(holder.icon);
+        holder.Pid.setText(result.get(position).toString());
+        holder.Pname.setText( result.get(position).toString());
+        holder.Pname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context1, "你選的是" +  v.getId() , Toast.LENGTH_SHORT).show();
+            }
+        });
         return convertView;
     }
 }

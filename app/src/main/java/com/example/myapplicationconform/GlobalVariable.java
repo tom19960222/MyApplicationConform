@@ -15,7 +15,7 @@ public class GlobalVariable extends Application {
     private String name;     // 後續要做持續登入（不登出再用）
     private int Uid;
     private Image icon;
-    private String dUrl = "b750ac3d";
+    private String dUrl = "e215aeea";
     private String url = "http://" + dUrl +".ngrok.io/";
     private  String URL = url +"app/";
     private List<Integer> numIcon1 =

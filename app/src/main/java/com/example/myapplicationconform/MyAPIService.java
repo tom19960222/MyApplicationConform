@@ -41,6 +41,10 @@ public interface MyAPIService {
     @GET("{Uid}/{Pid}")
     Call<pathSchema> getpath(@Path("Uid")int Uid,@Path("Pid")int Pid);
 
+    @FormUrlEncoded
+    @POST("wantted/{Uid}")
+    Call<pathSchema> postPath(@Path("Uid")int Uid,@Field("path")int path);
+
     @GET("path/{Uid}")
     Call<pathSchema> getPathUq(@Path("Uid")int Uid);
 

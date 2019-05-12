@@ -94,6 +94,8 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
     private TextView description;
     private Button image;
     private Button vedio;
+    private int[] P;
+    private int p;
 
 
 
@@ -464,7 +466,25 @@ public class MainActivity2 extends AppCompatActivity implements BeaconConsumer {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Toast.makeText(getApplicationContext(), "自定義路線成功" , Toast.LENGTH_LONG).show();
+                                for (int i = 0; i < P.length; i++) {
+                                    p = p + P[i];
+                                }
+
+                                Call<pathSchema> call = gv.getApi().postPath(gv.getUid(), p);
+
+                                call.enqueue(new Callback<pathSchema>() {
+                                    @Override
+                                    public void onResponse(Call<pathSchema> call, Response<pathSchema> response) {
+
+                                        Toast.makeText(getApplicationContext(), "自定義路線成功" , Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<pathSchema> call, Throwable t) {
+                                        Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG);
+                                    }
+                                });
+
                             }
                         })//設定結束的子視窗
                         .setNeutralButton("CANCEL",new DialogInterface.OnClickListener() {

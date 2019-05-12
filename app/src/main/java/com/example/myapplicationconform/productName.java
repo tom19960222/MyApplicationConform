@@ -16,4 +16,9 @@ public class productName {
     public Integer getPid() {
         return Pid;
     }
+
+    public void set(int Pid,String Pname){
+        this.Pid = Pid;
+        this.Pname = Pname;
+    }
 }

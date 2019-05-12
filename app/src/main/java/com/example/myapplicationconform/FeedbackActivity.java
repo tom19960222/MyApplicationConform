@@ -212,30 +212,35 @@ public class FeedbackActivity extends AppCompatActivity {
     void spin() {
         spinner = (Spinner)findViewById(R.id.spinner);
         // Get Product name
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-//                productName o = productAdapter.getItem(position);
-                TextView t = (TextView)findViewById(R.id.textView4);
-                t.setText(parent.getItemAtPosition(position).toString());
-
-                Toast.makeText(parent.getContext(), "你選的是" +  parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                productName o = productAdapter.getItem(1);
-
-                TextView t = (TextView)findViewById(R.id.textView4);
-                t.setText(o.toString());
-                Toast.makeText(FeedbackActivity.this, "你選的是" + o.getPid() + "預設", Toast.LENGTH_SHORT).show();
-
-            }
-        });
         productAdapter = new ProductAdapter(FeedbackActivity.this);
+
         spinner.setAdapter(productAdapter);
+
+
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+////                productName o = productAdapter.getItem(position);
+//                TextView t = (TextView)findViewById(R.id.textView4);
+//                t.setText(String.valueOf(position));
+//
+//                Toast.makeText(parent.getContext(), "你選的是" +  spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+////                productAdapter.notifyDataSetChanged();
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+////                productName o = productAdapter.getItem(1);
+////
+////                TextView t = (TextView)findViewById(R.id.textView4);
+////                t.setText(o.toString());
+////                Toast.makeText(FeedbackActivity.this, "你選的是" + o.getPid() + "預設", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+
 
     }
 
