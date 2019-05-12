@@ -39,13 +39,14 @@ class ProductAdapter extends BaseAdapter {
         gv = (GlobalVariable)context1.getApplicationContext();
 
         Call<productNameSchema> call = gv.getApi().getProductName();
+        final ProductAdapter PA = this;
 
         call.enqueue(new Callback<productNameSchema>() {
             @Override
             public void onResponse(Call<productNameSchema> call, Response<productNameSchema> response) {
                 result = response.body().getProductName();
-//                num = result.size();
-//                Toast.makeText(context1, result.toString(), Toast.LENGTH_LONG);
+                PA.data = result;
+                PA.notifyDataSetChanged();
             }
 
             @Override
@@ -70,23 +71,22 @@ class ProductAdapter extends BaseAdapter {
 
     public ProductAdapter(Context context) {
         context1 = context;
-//        data = getData();
+        this.data = new ArrayList<>();
         this.mInflater = LayoutInflater.from(context);
+        getData();
     }
 
     @Override
     public int getCount() {
-        data = getData();
         // How many items are in the data set represented by this Adapter.(在此适配器中所代表的数据集中的条目数)
-        return data.size();
+        return this.data.size();
 
     }
 
     @Override
     public productName getItem(int position) {
-//        data = getData();
         // Get the data item associated with the specified position in the data set.(获取数据集中与指定索引对应的数据项)
-        return result.get(position);
+        return this.data.get(position);
     }
 
     @Override
@@ -114,12 +114,6 @@ class ProductAdapter extends BaseAdapter {
 //        Picasso.get().load(gv.getUrl()+data.get(position).getIcon()).into(holder.icon);
         holder.Pid.setText(result.get(position).toString());
         holder.Pname.setText( result.get(position).toString());
-        holder.Pname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context1, "你選的是" +  v.getId() , Toast.LENGTH_SHORT).show();
-            }
-        });
         return convertView;
     }
 }

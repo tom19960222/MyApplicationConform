@@ -16,7 +16,7 @@ public class GlobalVariable extends Application {
     private int Uid;
     private Image icon;
     private String dUrl = "e215aeea";
-    private String url = "http://" + dUrl +".ngrok.io/";
+    private String url = "https://" + dUrl +".ngrok.io/";
     private  String URL = url +"app/";
     private List<Integer> numIcon1 =
             Arrays.asList(
